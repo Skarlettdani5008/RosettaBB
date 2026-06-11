@@ -39,4 +39,20 @@ struct MachOInspectorTests {
     func tooShort() {
         #expect(MachOInspector.architectures(in: Data([0xCF, 0xFA])) == [])
     }
+
+    @Test("thin big-endian arm64")
+    func thinBigEndianArm() {
+        // magic FE ED FA CF (big-endian Mach-O 64), cputype 0x0100000C big-endian: 01 00 00 0C
+        let data = Data([0xFE, 0xED, 0xFA, 0xCF, 0x01, 0x00, 0x00, 0x0C])
+        #expect(MachOInspector.architectures(in: data) == [.arm64])
+    }
+
+    @Test("fat64 arm64")
+    func fat64Arm() {
+        // CA FE BA BF (fat 64-bit), nfat_arch=1, один fat_arch_64 по 32 байта
+        var bytes: [UInt8] = [0xCA, 0xFE, 0xBA, 0xBF, 0x00, 0x00, 0x00, 0x01]
+        // fat_arch_64[0]: cputype 0x0100000C (BE) + 28 байт хвоста
+        bytes += [0x01, 0x00, 0x00, 0x0C] + [UInt8](repeating: 0, count: 28)
+        #expect(MachOInspector.architectures(in: Data(bytes)) == [.arm64])
+    }
 }
