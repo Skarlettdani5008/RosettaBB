@@ -40,11 +40,22 @@ struct ContentView: View {
 
     @ViewBuilder
     private var content: some View {
-        if model.entries.isEmpty && !model.isScanning {
+        if model.isScanning {
+            List(model.visibleEntries) { entry in
+                AppRow(entry: entry)
+            }
+        } else if model.entries.isEmpty {
             ContentUnavailableView(
                 "Нажмите «Сканировать»",
                 systemImage: "macwindow.on.rectangle",
                 description: Text("Найдём приложения и покажем, какие из них Intel-only.")
+            )
+            .frame(maxHeight: .infinity)
+        } else if model.visibleEntries.isEmpty {
+            ContentUnavailableView(
+                "Intel-приложений не найдено",
+                systemImage: "checkmark.seal",
+                description: Text("Все найденные приложения — Universal или Apple Silicon.")
             )
             .frame(maxHeight: .infinity)
         } else {

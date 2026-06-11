@@ -18,6 +18,7 @@ final class ScanViewModel {
     var appleCount: Int { entries.filter { $0.verdict == .appleSilicon }.count }
 
     func scan() async {
+        guard !isScanning else { return }
         isScanning = true
         entries = []
         let roots = AppScanner.defaultRoots
