@@ -22,12 +22,19 @@ struct ContentView: View {
             }
             .disabled(model.isScanning)
 
+            Button {
+                Task { await model.checkUpdates() }
+            } label: {
+                Label("Проверить обновления", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .disabled(model.isScanning || model.isCheckingUpdates || model.intelCount == 0)
+
             Toggle("Только Intel", isOn: $model.showIntelOnly)
                 .toggleStyle(.checkbox)
 
             Spacer()
 
-            if model.isScanning {
+            if model.isScanning || model.isCheckingUpdates {
                 ProgressView().controlSize(.small)
             } else if !model.entries.isEmpty {
                 Text("Intel: \(model.intelCount)  ·  Universal: \(model.universalCount)  ·  Apple: \(model.appleCount)")
@@ -41,9 +48,7 @@ struct ContentView: View {
     @ViewBuilder
     private var content: some View {
         if model.isScanning {
-            List(model.visibleEntries) { entry in
-                AppRow(entry: entry)
-            }
+            list
         } else if model.entries.isEmpty {
             ContentUnavailableView(
                 "Нажмите «Сканировать»",
@@ -59,15 +64,20 @@ struct ContentView: View {
             )
             .frame(maxHeight: .infinity)
         } else {
-            List(model.visibleEntries) { entry in
-                AppRow(entry: entry)
-            }
+            list
+        }
+    }
+
+    private var list: some View {
+        List(model.visibleEntries) { entry in
+            AppRow(entry: entry, status: model.updateStatuses[entry.id] ?? .notChecked)
         }
     }
 }
 
 private struct AppRow: View {
     let entry: AppEntry
+    let status: UpdateStatus
 
     var body: some View {
         HStack(spacing: 12) {
@@ -85,6 +95,7 @@ private struct AppRow: View {
             }
 
             Spacer()
+            updateView
             badge
             Button {
                 NSWorkspace.shared.activateFileViewerSelecting([entry.bundleURL])
@@ -95,6 +106,52 @@ private struct AppRow: View {
             .help("Показать в Finder")
         }
         .padding(.vertical, 2)
+    }
+
+    @ViewBuilder
+    private var updateView: some View {
+        switch status {
+        case .notChecked:
+            EmptyView()
+        case .checking:
+            ProgressView().controlSize(.small)
+        case .updateAvailable(let version, let source, let url):
+            if let url {
+                Button {
+                    NSWorkspace.shared.open(url)
+                } label: {
+                    Text("↑ \(version) · \(sourceLabel(source))")
+                }
+                .buttonStyle(.borderless)
+                .foregroundStyle(.green)
+                .help("Открыть страницу обновления")
+            } else {
+                Text("↑ \(version) · \(sourceLabel(source))")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.green)
+            }
+        case .upToDate:
+            Text("актуально")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        case .unknownSource:
+            Text("источник неизвестен")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        case .failed(let reason):
+            Text("ошибка")
+                .font(.caption)
+                .foregroundStyle(.red)
+                .help(reason)
+        }
+    }
+
+    private func sourceLabel(_ source: UpdateSource) -> String {
+        switch source {
+        case .appStore: return "App Store"
+        case .sparkle:  return "Sparkle"
+        case .homebrew: return "Homebrew"
+        }
     }
 
     private var badge: some View {
