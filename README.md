@@ -1,5 +1,9 @@
 # RosettaBB
 
+[![Release](https://img.shields.io/github/v/release/proterian/RosettaBB)](https://github.com/proterian/RosettaBB/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey)](https://github.com/proterian/RosettaBB/releases/latest)
+
 Утилита для Apple Silicon Mac: сканирует установленные приложения и показывает,
 какие из них **Intel-only** — то есть требуют Rosetta и перестанут работать,
 начиная с macOS 28 (см. [Apple Support 102527](https://support.apple.com/ru-ru/102527)).
@@ -47,3 +51,7 @@ bash scripts/package-dmg.sh      # → dist/RosettaBB.app и dist/RosettaBB-1.0.
 ## Статус
 
 Рабочее приложение: аудит архитектур + проверка обновлений Intel-приложений.
+
+## Лицензия
+
+[MIT](LICENSE).
