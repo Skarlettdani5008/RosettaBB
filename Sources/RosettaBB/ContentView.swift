@@ -130,8 +130,8 @@ private struct AppRow: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.green)
             }
-        case .upToDate:
-            Text("актуально")
+        case .upToDate(let source):
+            Text("актуально · \(sourceLabel(source))")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         case .unknownSource:
